@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from pymongo import ReturnDocument
-from ..models import CreateTodo, UpdateTodo
-from ..database import Todo, User
-from ..schemas import list_serial_todos, individual_serial_todo, individual_serial_user
-from ..oauth2 import get_current_user
+from models import CreateTodo, UpdateTodo
+from database import Todo, User
+from schemas import list_serial_todos, individual_serial_todo, individual_serial_user
+from oauth2 import get_current_user
 from bson import ObjectId
 from datetime import datetime
 

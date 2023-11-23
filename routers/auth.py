@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from ..database import User
-from .. import models, schemas
+from database import User
+import models, schemas
 # import secrets
 from jose import JWTError, jwt
-from ..utils import verify
-from ..oauth2 import create_access_token
+from utils import verify
+from oauth2 import create_access_token
 # from datetime import datetime, timedelta, timezone
-from ..utils import send_reset_email, hash
+from utils import send_reset_email, hash
 from fastapi.security import OAuth2PasswordBearer
-from ..config import settings
-from ..schemas import individual_serial_user
+from config import settings
+from schemas import individual_serial_user
 from datetime import datetime
 
 SECRET_KEY = settings.SECRET_KEY

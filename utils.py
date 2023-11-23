@@ -1,5 +1,5 @@
 from datetime import datetime
-from .config import settings
+from config import settings
 import smtplib
 from email.mime.text import MIMEText
 from passlib.context import CryptContext

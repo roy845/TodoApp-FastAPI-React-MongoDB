@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import todos, auth, users
+from routers import auth,users,todos
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -22,6 +22,13 @@ app.add_middleware(
 )
 
 
+
 frontend_path = Path(__file__).resolve().parent / "build"
+
 # Serve the React app from the 'build' folder at the root path
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
+
+@app.get("/", tags=["Root"])
+def root():
+    return {"message": "hello world"}
+

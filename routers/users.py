@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, status
-from ..database import User
-from ..schemas import individual_serial_user, list_serial_users
-from ..models import UpdateUser
+from database import User
+from schemas import individual_serial_user, list_serial_users
+from models import UpdateUser
 from bson import ObjectId
 from pymongo import ReturnDocument
 from datetime import datetime
-from ..utils import hash
+from utils import hash
 
 
 router = APIRouter(

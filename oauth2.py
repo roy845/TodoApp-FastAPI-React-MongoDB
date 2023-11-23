@@ -1,10 +1,10 @@
 from fastapi import Depends, status, HTTPException
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from .models import TokenData
-from .database import User
+from models import TokenData
+from database import User
 from fastapi.security import OAuth2PasswordBearer
-from .config import settings
+from config import settings
 from bson import ObjectId
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
