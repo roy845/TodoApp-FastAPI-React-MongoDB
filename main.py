@@ -22,6 +22,6 @@ app.add_middleware(
 )
 
 
-frontend_path = Path(__file__).resolve().parent.parent / "build"
+frontend_path = Path(__file__).resolve().parent / "build"
 # Serve the React app from the 'build' folder at the root path
 app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
