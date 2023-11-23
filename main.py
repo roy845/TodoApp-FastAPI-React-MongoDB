@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routers import todos, auth, users
+from routers import todos, auth, users
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
