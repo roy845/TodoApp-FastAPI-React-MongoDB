@@ -1,15 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { RegisterFormData, Todo, User } from "../types";
 
-const isDev = false;
-
-let BASE_URL = "http://localhost:8000/";
-
-if (isDev) {
-  BASE_URL = "http://localhost:8000/";
-} else {
-  BASE_URL = "https://todoapp-g2sh.onrender.com/";
-}
+const BASE_URL = "https://todoapp-g2sh.onrender.com/";
 
 export const API_URLS = {
   login: `${BASE_URL}auth/login`,

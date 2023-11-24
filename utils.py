@@ -5,9 +5,8 @@ from email.mime.text import MIMEText
 from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-dev = False
 
-BASE_URL = "http://localhost:8000/" if dev == True else "https://todoapp-g2sh.onrender.com/"
+BASE_URL = "https://todoapp-g2sh.onrender.com/"
 
 
 def hash(password: str) -> str:
