@@ -32,7 +32,7 @@ def root():
 
 @app.get("/{path:path}")
 def catch_all():
-    return FileResponse(f"{frontend_path}\index.html")
+    return FileResponse(f"{frontend_path}/index.html")
 
 
 # Serve the React app from the 'build' folder at the root path
