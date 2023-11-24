@@ -53,13 +53,13 @@ const TodoItem: React.FC<TodoItemProps> = ({
         <h2 className="text-lg font-semibold mb-2 transition-colors duration-300 ease-in-out hover:text-white">
           {todo.name}
         </h2>
-        <p className="text-gray-500 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
+        <p className="text-gray-800 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
           {todo.description}
         </p>
-        <p className="text-gray-500 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
+        <p className="text-gray-800 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
           From {new Date(todo.createdAt).toLocaleString()}
         </p>
-        <p className="text-gray-500 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
+        <p className="text-gray-800 mb-2 transition-colors duration-300 ease-in-out hover:text-white">
           Updated at {new Date(todo.updatedAt).toLocaleString()}
         </p>
         <p

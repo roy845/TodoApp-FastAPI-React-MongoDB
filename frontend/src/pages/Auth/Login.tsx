@@ -100,7 +100,7 @@ const Login = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="border border-gray-300 p-2 w-full rounded-md"
+              className="w-full border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
               required
             />
             {emailValidationDetails}
@@ -119,7 +119,7 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="border border-gray-300 p-2 w-full rounded-md"
+              className="w-full border rounded-md py-2 px-3 focus:outline-none focus:ring focus:border-blue-300"
               required
             />
           </div>
@@ -134,8 +134,13 @@ const Login = () => {
           >
             {loading ? <Spinner sm /> : "Login"}
           </button>
+          <div className="mt-4">
+            <Link to="/forgotpassword" className="text-blue-500 no-underline">
+              Forgot Password ?
+            </Link>
+          </div>
           <div className="text-sm mt-4">
-            Don't have an account?{" "}
+            Don't have an account ?{" "}
             <Link to="/signup" className="text-blue-500 no-underline">
               Sign Up
             </Link>

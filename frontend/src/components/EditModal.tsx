@@ -36,7 +36,7 @@ const EditModal: React.FC<EditModalProps> = ({
       }
     };
 
-    isOpen && fetchTodo();
+    selectedTodo !== null && fetchTodo();
   }, [selectedTodo]);
 
   const handleInputChange = (
@@ -58,10 +58,10 @@ const EditModal: React.FC<EditModalProps> = ({
       await updateTodo(selectedTodo, editedTodo);
       toast.success("Todo updated successfully", { position: "bottom-left" });
       setFetchAgain(!fetchAgain);
+      onClose();
     } catch (error) {
       console.log(error);
     }
-    onClose();
   };
 
   return (

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from pydantic import EmailStr
+from datetime import datetime
 
 
 class CreateUser(BaseModel):
@@ -31,3 +32,17 @@ class UpdateUser(BaseModel):
 
 class TokenData(BaseModel):
     id: str
+
+class PasswordResetRequest(BaseModel):
+    email:str
+
+class PasswordResetToken(BaseModel):
+    token:str
+    user_id:str
+    expiration_time:datetime
+
+
+
+class PasswordReset(BaseModel):
+    newPassword: str
+    token: str

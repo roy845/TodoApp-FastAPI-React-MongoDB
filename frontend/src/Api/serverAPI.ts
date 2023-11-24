@@ -1,7 +1,15 @@
 import axios, { AxiosResponse } from "axios";
 import { RegisterFormData, Todo, User } from "../types";
 
-export const BASE_URL = "http://localhost:8000/";
+const isDev = false;
+
+let BASE_URL = "http://localhost:8000/";
+
+if (isDev) {
+  BASE_URL = "http://localhost:8000/";
+} else {
+  BASE_URL = "https://todoapp-g2sh.onrender.com/";
+}
 
 export const API_URLS = {
   login: `${BASE_URL}auth/login`,
@@ -15,6 +23,8 @@ export const API_URLS = {
   createTodo: `${BASE_URL}todos/`,
   getUser: `${BASE_URL}users/`,
   updateProfile: `${BASE_URL}users/`,
+  forgotPassword: `${BASE_URL}auth/forgotpassword`,
+  resetPassword: `${BASE_URL}auth/resetpassword`,
 };
 
 export const register = (
@@ -113,6 +123,27 @@ export const updateProfile = (
 ): Promise<AxiosResponse<any, any>> => {
   try {
     return axios.put(`${API_URLS.updateProfile}${user_id}`, user);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const forgotPassword = (
+  email: string
+): Promise<AxiosResponse<any, any>> => {
+  try {
+    return axios.post(API_URLS.forgotPassword, { email });
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = (
+  newPassword: string,
+  token: string
+): Promise<AxiosResponse<any, any>> => {
+  try {
+    return axios.post(API_URLS.resetPassword, { newPassword, token });
   } catch (error) {
     throw error;
   }

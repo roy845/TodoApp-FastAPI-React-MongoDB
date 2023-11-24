@@ -6,6 +6,8 @@ import Register from "./pages/Auth/Register";
 import RequireAuth from "./components/RequireAuth";
 import { AddTodo } from "./pages/AddTodo";
 import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 const AppRoutes = () => {
   const { auth } = useAuth();
@@ -16,6 +18,8 @@ const AppRoutes = () => {
         path="/signup"
         element={auth ? <Navigate to="/" /> : <Register />}
       />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
+      <Route path="/resetpassword/:token" element={<ResetPassword />} />
 
       <Route element={<RequireAuth />}>
         <Route path="/home" element={<Home />} />

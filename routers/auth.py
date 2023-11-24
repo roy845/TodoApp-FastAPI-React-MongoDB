@@ -1,17 +1,19 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from database import User
-import models, schemas
-# import secrets
+from database import User,ResetPasswordToken
+import models
+import secrets
 from jose import JWTError, jwt
 from utils import verify
 from oauth2 import create_access_token
-# from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from utils import send_reset_email, hash
 from fastapi.security import OAuth2PasswordBearer
 from config import settings
 from schemas import individual_serial_user
 from datetime import datetime
+from bson import ObjectId
+from pymongo import ReturnDocument
 
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
@@ -52,7 +54,7 @@ def create_user(user: models.CreateUser):
 
     result = User.insert_one(user_dict)
 
-    # Return the inserted todo with the generated ObjectId
+    # Return the inserted user with the generated ObjectId
     inserted_user = User.find_one({"_id": result.inserted_id})
     return {"message": f"User {user.username} created!", "user": individual_serial_user(inserted_user)}
 
@@ -95,58 +97,58 @@ def check_token_expiration(token: str = Depends(oauth2_scheme)):
             status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired token")
 
 
-# @router.post("/forgotpassword")
-# def forgot_password(request: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
+@router.post("/forgotpassword")
+def forgot_password(request: models.PasswordResetRequest):
 
-#     user = db.query(models.User).filter(
-#         models.User.email == request.email).first()
+    user = User.find_one({"email":request.email})
 
-#     if not user:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials")
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Invalid Credentials")
 
-#     # Generate a random token
-#     token = secrets.token_urlsafe(32)
-#     expiration_time = datetime.utcnow() + timedelta(minutes=15)
+    # Generate a random token
+    token = secrets.token_urlsafe(32)
+    expiration_time = datetime.now() + timedelta(minutes=15)
 
-#     # Store the token in the database
-#     password_reset_token = models.PasswordResetToken(
-#         user_id=user.id, token=token, expiration_time=expiration_time)
-#     db.add(password_reset_token)
-#     db.commit()
-#     db.close()
-
-#     # Send the reset email
-#     send_reset_email(request.email, token)
-#     return {"message": "Reset email sent"}
+    # Store the token in the database
+    password_reset_token = models.PasswordResetToken(
+        user_id=str(user["_id"]), token=token, expiration_time=expiration_time)
+    ResetPasswordToken.insert_one(password_reset_token.model_dump())
+    # Send the reset email
+    send_reset_email(request.email, token)
+    return {"message": "Reset email sent"}
 
 
-# @router.post("/resetpassword")
-# def reset_password(request: schemas.PasswordReset, db: Session = Depends(get_db)):
+@router.post("/resetpassword")
+def reset_password(request: models.PasswordReset):
 
-#     token_data_query = db.query(models.PasswordResetToken).filter(
-#         models.PasswordResetToken.token == request.token)
-#     token_data = db.query(models.PasswordResetToken).filter(
-#         models.PasswordResetToken.token == request.token).first()
+    reset_password_data = ResetPasswordToken.find_one({"token":request.token})
+    
 
-#     if not token_data:
-#         raise HTTPException(status_code=400, detail="Invalid or expired token")
+    if not reset_password_data:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired token")
+    
+    
 
-#     # Check if the token is still valid
-#     if token_data.expiration_time < datetime.now(timezone.utc):
-#         token_data_query.delete(synchronize_session=False)
-#         db.commit()
-#         raise HTTPException(status_code=400, detail="Invalid or expired token")
+    # Check if the token is still valid
+    if reset_password_data["expiration_time"] < datetime.now():
+        ResetPasswordToken.delete_one({"token":request.token})
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired token")
+    
 
-#     # Find the user in the database
-#     user = db.query(models.User).filter(
-#         models.User.id == token_data.user_id).first()
+    user_id_object = ObjectId(reset_password_data["user_id"])
 
-#     # Update the user's password (replace this with your actual password hashing logic)
-#     user.password = hash(request.newPassword)
+    update_data = {"$set": {}}
 
-#     # Remove the used token
-#     token_data_query.delete(synchronize_session=False)
-#     db.commit()
+    update_data["$set"]["password"] = hash(request.newPassword)
+    
+    User.find_one_and_update(
+        {"_id": user_id_object},
+        update_data,
+        return_document=ReturnDocument.AFTER
+    )
 
-#     return {"message": "Password reset successfully"}
+    # Remove the used token
+    ResetPasswordToken.delete_one({"token":request.token})
+
+    return {"message": "Password reset successfully"}

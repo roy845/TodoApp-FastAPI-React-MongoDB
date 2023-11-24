@@ -26,16 +26,16 @@ def send_reset_email(email, token):
     # Construct the email message
     message = MIMEText(body)
     message["Subject"] = subject
-    message["From"] = settings.email_address
+    message["From"] = settings.EMAIL_ADDRESS
     message["To"] = email
 
     # Connect to the SMTP server (in this case, Gmail's SMTP server)
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
-        server.login(settings.email_address, settings.email_password)
+        server.login(settings.EMAIL_ADDRESS, settings.EMAIL_PASSWORD)
 
         # Send the email
-        server.sendmail(settings.email_address, [email], message.as_string())
+        server.sendmail(settings.EMAIL_ADDRESS, [email], message.as_string())
 
 
 def add_timestamps_to_document(document):

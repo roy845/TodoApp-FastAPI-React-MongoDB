@@ -7,3 +7,4 @@ print('🚀 Connected to MongoDB...')
 db = client.TodoApp  # database name
 Todo = db["todos"]  # collection name
 User = db["users"]  # collection name
+ResetPasswordToken = db["resetpasswordtokens"] # collection name
