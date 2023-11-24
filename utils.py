@@ -5,6 +5,10 @@ from email.mime.text import MIMEText
 from passlib.context import CryptContext
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+dev = False
+
+BASE_URL = "http://localhost:8000/" if dev == True else "https://todoapp-g2sh.onrender.com/"
+
 
 def hash(password: str) -> str:
     return pwd_context.hash(password)
@@ -18,7 +22,7 @@ def send_reset_email(email, token):
     subject = "Password Reset Request"
     body = (
         f"Click the following link to reset your password: "
-        f"http://localhost:3000/resetpassword/{token}\n\n"
+        f"{BASE_URL}resetpassword/{token}\n\n"
         f"The link is valid for only 15 minutes. "
         f"After that, you need to generate another link."
     )
