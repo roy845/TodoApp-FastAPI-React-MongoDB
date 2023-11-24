@@ -21,6 +21,7 @@ const ResetPassword: React.FC = () => {
   const [passwordEntered, setPasswordEntered] = useState(false);
 
   const { token } = useParams();
+  console.log(token);
   const navigate: NavigateFunction = useNavigate();
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
