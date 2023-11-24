@@ -7,7 +7,7 @@ import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import Tooltip from "./Tooltip";
 import { useSearch } from "../context/search";
 
-const AppBar: React.FC = ({}) => {
+const AppBar: React.FC = () => {
   const { auth, setAuth } = useAuth();
   const { searchTerm, setSearchTerm } = useSearch();
   const navigate: NavigateFunction = useNavigate();
@@ -16,13 +16,14 @@ const AppBar: React.FC = ({}) => {
     setAuth(null);
     localStorage.removeItem("auth");
     navigate("/");
-    toast.success(`User ${auth?.user?.username} Logged out successfully`, {
+    toast.success(`User ${auth?.user?.username} logged out successfully`, {
       position: "bottom-left",
     });
   };
+
   return (
-    <div className="bg-gray-800 p-4 flex justify-between items-center">
-      <div className="flex space-x-4">
+    <div className="bg-gray-800 p-4 flex flex-col md:flex-row justify-between items-center">
+      <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
         <Link to="/" className="text-white">
           Home
         </Link>
@@ -52,7 +53,7 @@ const AppBar: React.FC = ({}) => {
         <img
           src={auth?.user?.profilePic}
           alt="Profile"
-          className="rounded-full h-10 w-10 object-cover cursor-pointer"
+          className="rounded-full h-10 w-10 object-cover cursor-pointer mt-2 md:mt-0"
         />
       </Tooltip>
     </div>
