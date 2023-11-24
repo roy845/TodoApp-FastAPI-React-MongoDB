@@ -37,9 +37,11 @@ export const login = (formData: FormData): Promise<AxiosResponse<any, any>> => {
   }
 };
 
-export const getTodosByUserId = (): Promise<AxiosResponse<any, any>> => {
+export const getTodosByUserId = (
+  searchTerm: string
+): Promise<AxiosResponse<any, any>> => {
   try {
-    return axios.get(API_URLS.getTodosByUserId);
+    return axios.get(`${API_URLS.getTodosByUserId}?search=${searchTerm}`);
   } catch (error) {
     throw error;
   }

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, NavigateFunction } from "react-router-dom";
 import { useAuth } from "../context/auth";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd } from "@fortawesome/free-solid-svg-icons";
 import Tooltip from "./Tooltip";
+import { useSearch } from "../context/search";
 
 const AppBar: React.FC = ({}) => {
   const { auth, setAuth } = useAuth();
-
+  const { searchTerm, setSearchTerm } = useSearch();
   const navigate: NavigateFunction = useNavigate();
 
   const handleLogout = (): void => {
@@ -31,6 +32,13 @@ const AppBar: React.FC = ({}) => {
         <Link to="#" onClick={handleLogout} className="text-white">
           Logout
         </Link>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="px-2 py-1 rounded-md"
+        />
         <Tooltip text="Add todo">
           <FontAwesomeIcon
             onClick={() => navigate("/addTodo")}

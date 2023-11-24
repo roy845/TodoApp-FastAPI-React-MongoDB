@@ -45,7 +45,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
       className={`bg-white p-4 rounded-md border border-gray-300 flex justify-between items-center
               ${
                 todo.completed
-                  ? "hover:bg-green-500 cursor-pointer text-black"
+                  ? "hover:bg-green-500 cursor-pointer"
                   : "hover:bg-red-500 cursor-pointer"
               }`}
     >

@@ -6,6 +6,7 @@ from schemas import list_serial_todos, individual_serial_todo, individual_serial
 from oauth2 import get_current_user
 from bson import ObjectId
 from datetime import datetime
+from pymongo import DESCENDING
 
 
 router = APIRouter(
@@ -39,10 +40,24 @@ def get_todos(current_user: dict = Depends(get_current_user), limit: int = 0):
 
 
 @router.get('/getTodosByUserId', status_code=status.HTTP_200_OK)
-def get_todos_by_user_id(current_user: dict = Depends(get_current_user)):
-    try:
+def get_todos_by_user_id(
+    current_user: dict = Depends(get_current_user),
+    search: str = "",
+   ):
 
-        todos = Todo.find({"user_id": current_user["_id"]}).sort("createdAt", -1)
+
+    try:
+        filter_dict = {"user_id": current_user["_id"]}
+
+        if search:
+            filter_dict["$or"] = [
+                {"name": {"$regex": f".*{search}.*", "$options": "i"}},
+                {"description": {"$regex": f".*{search}.*", "$options": "i"}},
+            ]
+
+    
+        todos = Todo.find(filter_dict).sort("createdAt", DESCENDING)
+
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
